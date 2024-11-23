@@ -13,3 +13,7 @@ panic = "abort"
 bootloader = "0.9"
 volatile = "0.2.6"
 fat32 = "0.2"
+x86_64 = "0.15.0"
+
+[package.metadata.bootimage]
+test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04"]
