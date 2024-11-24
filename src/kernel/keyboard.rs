@@ -1,5 +1,6 @@
 use x86_64::instructions::port::Port;
 
+
 static mut LAST_SCANCODE: u8 = 0;
 
 pub fn read_key() -> Option<u8> {
@@ -7,19 +8,16 @@ pub fn read_key() -> Option<u8> {
     let scancode: u8 = unsafe { port.read() };
 
     unsafe {
-        // Ігноруємо повторення того ж scancode
         if scancode == LAST_SCANCODE {
             return None;
         }
         LAST_SCANCODE = scancode;
     }
 
-    // Break code (відпускання клавіші) ігноруємо
     if scancode >= 0x80 {
         return None;
     }
 
-    // Конвертуємо scancode в ASCII
     scancode_to_ascii(scancode)
 }
 
@@ -67,6 +65,6 @@ fn scancode_to_ascii(scancode: u8) -> Option<u8> {
     0x34 => Some(b'.'),   // .
     0x35 => Some(b'/'),   // /
     0x39 => Some(b' '),   // Space
-        _ => None,           // Інші клавіші ігноруємо
+        _ => None, 
     }
 }

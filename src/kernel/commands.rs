@@ -55,6 +55,7 @@ fn execute_command(cmd: &str) {
             vga_buffer::println("\nAvailable commands:");
             vga_buffer::println("\nhelp    - Show this help message");
             vga_buffer::println("\ncl   - Clear the screen");
+            vga_buffer::println("\nrb - Reboot system");
         }
         "rb" => {
             reboot_system()
@@ -71,8 +72,7 @@ fn execute_command(cmd: &str) {
 
 fn reboot_system() {
     vga_buffer::println("\nRebooting system...");
-    // Перезавантаження системи (це може бути замкнення на асемблері, перезапуск у вашій тестовій середовищі)
     unsafe {
-        asm!("int3"); // Викликає програму для перезавантаження
+        asm!("int3");
     }
 }

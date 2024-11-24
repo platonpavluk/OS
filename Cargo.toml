@@ -12,7 +12,6 @@ panic = "abort"
 [dependencies]
 bootloader = "0.9"
 volatile = "0.2.6"
-fat32 = "0.2"
 x86_64 = "0.15.0"
 
 [package.metadata.bootimage]
