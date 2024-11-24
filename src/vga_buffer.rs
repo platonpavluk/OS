@@ -10,6 +10,7 @@ pub fn clear_screen() {
             *VGA_BUFFER.offset(i as isize * 2) = b' ';
             *VGA_BUFFER.offset(i as isize * 2 + 1) = 0x07;
         }
+        clear_input_history()
     }
 }
 
@@ -73,3 +74,12 @@ pub fn print(s: &str) {
 
 
 
+pub fn clear_input_history() {
+    // Припускаємо, що введення зберігається в масиві `buffer`
+    let mut buffer = [0u8; 1024]; // Масив для введення
+
+    // Очищаємо всі старі символи та '\n'
+    for i in 0..buffer.len() {
+        buffer[i] = 0;
+    }
+}

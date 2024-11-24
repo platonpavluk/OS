@@ -2,6 +2,8 @@
 use crate::keyboard;
 use crate::vga_buffer;
 use crate::vga_buffer::print;
+use core::arch::asm;
+use core::ptr;
 
 
 
@@ -16,12 +18,14 @@ pub fn process_commands() {
         if let Some(byte) = keyboard::read_key() {
             match byte {
                 b'\n' => {
+                    let command = core::str::from_utf8(&buffer[..index]).unwrap_or("");
                     // Натискання Enter: обробка команди
                     if index > 0 {
-                        let command = core::str::from_utf8(&buffer[..index]).unwrap_or("");
+                        
                         execute_command(command);
                         index = 0; // Очищаємо буфер
                     }
+                    
                     vga_buffer::println(""); // Перехід на новий рядок після команди
                     print("> ");
                 }
@@ -51,20 +55,24 @@ fn execute_command(cmd: &str) {
             vga_buffer::println("\nAvailable commands:");
             vga_buffer::println("\nhelp    - Show this help message");
             vga_buffer::println("\ncl   - Clear the screen");
-            vga_buffer::println("\nreboot  - Reboot the system (stub)");
-            vga_buffer::println("\nshutdown - Shutdown the system (stub)");
         }
+        "rb" => {
+            reboot_system()
+        }
+
         "cl" => {
             vga_buffer::clear_screen();
-        }
-        "reboot" => {
-            vga_buffer::println("\nRebooting... (not implemented)");
-        }
-        "shutdown" => {
-            vga_buffer::println("\nShutting down... (not implemented)");
         }
         _ => {
             vga_buffer::println("\nUnknown command. Type 'help' for a list of commands.");
         }
+    }
+}
+
+fn reboot_system() {
+    vga_buffer::println("\nRebooting system...");
+    // Перезавантаження системи (це може бути замкнення на асемблері, перезапуск у вашій тестовій середовищі)
+    unsafe {
+        asm!("int3"); // Викликає програму для перезавантаження
     }
 }
