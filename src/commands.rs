@@ -3,9 +3,7 @@ use crate::keyboard;
 use crate::vga_buffer;
 use crate::vga_buffer::print;
 use core::arch::asm;
-use core::ptr;
-
-
+use crate::filesystem::FileSystem;
 
 /// Обробляє команди, зчитуючи з клавіатури
 /// Обробляє команди, зчитуючи з клавіатури та тримає курсор біля підказки
@@ -50,6 +48,7 @@ pub fn process_commands() {
 }
 
 fn execute_command(cmd: &str) {
+    let fs = FileSystem::new();
     match cmd {
         "help" => {
             vga_buffer::println("\nAvailable commands:");
@@ -64,9 +63,14 @@ fn execute_command(cmd: &str) {
         "cl" => {
             vga_buffer::clear_screen();
         }
+        "ls" => {
+            fs.list_files();
+        }
+
         _ => {
             vga_buffer::println("\nUnknown command. Type 'help' for a list of commands.");
         }
+        
     }
 }
 
